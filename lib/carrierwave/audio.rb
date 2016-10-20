@@ -17,6 +17,7 @@ module CarrierWave
     end
 
     def convert output_format = :mp3, output_options = {}
+      cache_stored_file! if !cached?
       format = sanitized_format(output_format)
       ext = File.extname(current_path)
       input_options = { type: ext.gsub(/\./, '') }
@@ -28,6 +29,7 @@ module CarrierWave
     end
 
     def watermark watermark_file_path, output_format = :mp3, output_options = {}
+      cache_stored_file! if !cached?
       format = sanitized_format(output_format)
       ext = File.extname(current_path)
       watermark_ext = File.extname(watermark_file_path)
