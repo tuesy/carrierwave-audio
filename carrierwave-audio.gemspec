@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'carrierwave'
-  spec.add_dependency 'ruby-sox'
-  spec.add_dependency 'soxi-wrapper'
+  spec.add_dependency 'carrierwave', '>= 0.10.0'
+  spec.add_dependency 'ruby-sox', '>= 0.0.3'
+  spec.add_dependency 'soxi-wrapper', '>= 0.0.1'
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
