@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    carrierwave-audio (1.0.1)
+    carrierwave-audio (1.0.3)
       carrierwave
       ruby-sox
       soxi-wrapper
@@ -19,17 +19,19 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     builder (3.2.2)
-    carrierwave (0.10.0)
+    carrierwave (0.11.2)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+      mimemagic (>= 0.3.0)
     i18n (0.7.0)
     json (1.8.3)
-    mime-types (3.0)
+    mime-types (3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0221)
-    minitest (5.8.4)
+    mime-types-data (3.2016.0521)
+    mimemagic (0.3.1)
+    minitest (5.9.1)
     rake (11.1.0)
     ruby-sox (0.0.3)
     soxi-wrapper (0.0.1)
