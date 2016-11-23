@@ -19,7 +19,7 @@ module CarrierWave
       cache_stored_file! if !cached?
 
       audio_filename = Processor.convert(current_path, options)
-      extension = File.extname(audio_filename)
+      extension = File.extname(audio_filename).gsub(/\./, '')
       File.rename audio_filename, current_path
       set_content_type extension
     end
@@ -28,7 +28,7 @@ module CarrierWave
       cache_stored_file! if !cached?
 
       audio_filename = Processor.watermark(current_path, options)
-      extension = File.extname(audio_filename)
+      extension = File.extname(audio_filename).gsub(/\./, '')
       File.rename audio_filename, current_path
       set_content_type extension
     end
