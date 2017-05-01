@@ -45,7 +45,7 @@ If you'd like to convert from your initially uploaded file-type to a different o
 `process :convert` accepts two parameters:
 
 ```ruby
-  process :convert => [output_format, output_options]
+  process :convert => [output_format:, output_options:]
 ```
 
 `output_format` - Accepts a symbol. The only currently available option is the default, `:mp3`.
