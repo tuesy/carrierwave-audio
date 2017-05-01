@@ -67,7 +67,10 @@ If you'd like to add a watermark over the top of your file, use `watermark` like
 
 ```ruby
   version :watermarked do
-    process :watermark => ["#{Rails.root}/db/watermark.mp3"]
+    process :watermark => [{
+      output_format: :mp3,
+      watermark_file: "#{Rails.root}/db/watermark.mp3"
+    }]
 
     def full_filename(for_file)
       "#{super.chomp(File.extname(super))}.mp3"
@@ -78,14 +81,14 @@ If you'd like to add a watermark over the top of your file, use `watermark` like
 `process :watermark` accepts three parameters:
 
 ```ruby
-  process :watermark => [watermark_file_path, output_format, output_options]
+  process :watermark => [watermark_file:, output_format:, output_options:]
 ```
 
-`watermark_file_path` - REQUIRED. Path to where your watermarked file is stored.
+`watermark_file` - REQUIRED. Path to where your watermarked file is stored.
 
 VERY IMPORTANT: The watermarked file must be a 44.1k, 2-channel mp3. It needs to be a long file. It'll be truncated to fit the length of your uploaded file.
 
-`output_format` - Optional. The only currently available option is the default, `:mp3`.
+`output_format` - Accepts a symbol. The only currently available option is the default, `:mp3`.
 
 `output_options` - Optional. Sox options for the output file (see [ruby-sox](https://github.com/TMXCredit/ruby-sox) and the [SoX documentation](http://sox.sourceforge.net/sox.pdf)). Defaults to:
 
