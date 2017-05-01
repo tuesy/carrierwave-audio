@@ -34,7 +34,7 @@ If you'd like to convert from your initially uploaded file-type to a different o
 
 ```ruby
   version :mp3 do
-    process :convert => [:mp3]
+    process :convert => [output_format: :mp3]
 
     def full_filename(for_file)
       "#{super.chomp(File.extname(super))}.mp3"
