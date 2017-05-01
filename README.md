@@ -42,10 +42,10 @@ If you'd like to convert from your initially uploaded file-type to a different o
   end
 ```
 
-`process :convert` accepts two parameters:
+`process :convert` accepts a hash with one or two parameters:
 
 ```ruby
-  process :convert => [output_format:, output_options:]
+  process :convert => [{output_format:, output_options:}]
 ```
 
 `output_format` - Accepts a symbol. The only currently available option is the default, `:mp3`.
@@ -78,10 +78,10 @@ If you'd like to add a watermark over the top of your file, use `watermark` like
   end
 ```
 
-`process :watermark` accepts three parameters:
+`process :watermark` accepts a hash with up to three parameters:
 
 ```ruby
-  process :watermark => [watermark_file:, output_format:, output_options:]
+  process :watermark => [{watermark_file:, output_format:, output_options:}]
 ```
 
 `watermark_file` - REQUIRED. Path to where your watermarked file is stored.
