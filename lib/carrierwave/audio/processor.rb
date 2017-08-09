@@ -88,26 +88,16 @@ module CarrierWave
 
           ext = File.extname(source)
           input_options = { type: ext.gsub(/\./, '') }
-          normalized_filename = tmp_filename(source: source, format: format, prefix: "norm")
-          @log.timed("\nNormalizing file to -6dB...") do
-            convert_file(
-              input_file_path: source, 
-              input_options: input_options, 
-              output_file_path: normalized_filename, 
-              output_options: output_options_for_format(input_options[:type]), 
-              fx: { gain: "-n -6" }
-            )
-          end
 
           watermark_ext = File.extname(watermark_file_path)
           watermark_options = { type: watermark_ext.gsub(/\./, '') }
           final_filename = tmp_filename(source: source, format: format, prefix: "wtmk")
-          @log.timed("\nCombining normalized file and watermark, normalizing final output to 0dB...") do
+          @log.timed("\nCombining source file and watermark, limiting final output...") do
             combiner = Sox::Cmd.new(combine: :mix)
-            combiner.add_input normalized_filename, input_options
+            combiner.add_input source, input_options
             combiner.add_input watermark_file_path, watermark_options
             combiner.set_output final_filename, output_options_for_format(format)
-            combiner.set_effects({ trim: "0 =#{Soxi::Wrapper.file(source).seconds}", gain: "-n" })
+            combiner.set_effects({ trim: "0 =#{Soxi::Wrapper.file(source).seconds}", vol: "0 db 0.01" })
             combiner.run
           end
 
