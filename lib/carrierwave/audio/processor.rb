@@ -86,16 +86,30 @@ module CarrierWave
           @log = Log.new(options[:logger])
           @log.start!
 
-          ext = File.extname(source)
-          input_options = { type: ext.gsub(/\./, '') }
-
+          source_samplerate = Soxi::Wrapper.file(source).samplerate.to_i
+          watermark_samplerate = Soxi::Wrapper.file(watermark_file_path).samplerate.to_i
           watermark_ext = File.extname(watermark_file_path)
           watermark_options = { type: watermark_ext.gsub(/\./, '') }
+          converted_watermark = watermark_file_path
+          if source_samplerate != watermark_samplerate
+            converted_watermark = tmp_filename(source: source, format: watermark_ext, prefix: "cnvt_wtmk")
+            @log.timed("\nConverting watermarked file to source samplerate of #{source_samplerate}...") do
+              convert_file(
+                input_file_path: watermark_file_path, 
+                input_options: watermark_options, 
+                output_file_path: converted_watermark, 
+                output_options: output_options_for_format(watermark_options[:type]).merge(rate: source_samplerate)
+              )
+            end
+          end
+
+          ext = File.extname(source)
+          input_options = { type: ext.gsub(/\./, '') }
           final_filename = tmp_filename(source: source, format: format, prefix: "wtmk")
           @log.timed("\nCombining source file and watermark, limiting final output...") do
             combiner = Sox::Cmd.new(combine: :mix)
             combiner.add_input source, input_options
-            combiner.add_input watermark_file_path, watermark_options
+            combiner.add_input converted_watermark, watermark_options
             combiner.set_output final_filename, output_options_for_format(format)
             combiner.set_effects({ trim: "0 =#{Soxi::Wrapper.file(source).seconds}", vol: "0 db 0.01" })
             combiner.run
