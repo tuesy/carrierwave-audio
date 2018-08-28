@@ -38,6 +38,7 @@ module CarrierWave
         def convert(source, options={})
           options = DefaultConvertOptions.merge(options)
           format = sanitized_format(options[:output_format])
+          output_options = options[:output_options] || {}
 
           @log = Log.new(options[:logger])
           @log.start!
@@ -50,7 +51,7 @@ module CarrierWave
               input_file_path: source, 
               input_options: input_options, 
               output_file_path: final_filename, 
-              output_options: output_options_for_format(format)
+              output_options: output_options_for_format(format).merge(output_options)
             )
           end
 
