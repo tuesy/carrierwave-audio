@@ -39,6 +39,8 @@ module CarrierWave
       case extension.to_sym
       when :mp3
         "audio/mpeg3"
+      when :ogg
+        'audio/ogg'
       end
     end
   end

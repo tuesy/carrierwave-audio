@@ -48,9 +48,9 @@ module CarrierWave
           final_filename = tmp_filename(source: source, format: format)
           @log.timed("\nConverting...") do
             convert_file(
-              input_file_path: source, 
-              input_options: input_options, 
-              output_file_path: final_filename, 
+              input_file_path: source,
+              input_options: input_options,
+              output_file_path: final_filename,
               output_options: output_options_for_format(format).merge(output_options)
             )
           end
@@ -96,9 +96,9 @@ module CarrierWave
             converted_watermark = tmp_filename(source: source, format: watermark_ext, prefix: "cnvt_wtmk")
             @log.timed("\nConverting watermarked file to source samplerate of #{source_samplerate}...") do
               convert_file(
-                input_file_path: watermark_file_path, 
-                input_options: watermark_options, 
-                output_file_path: converted_watermark, 
+                input_file_path: watermark_file_path,
+                input_options: watermark_options,
+                output_file_path: converted_watermark,
                 output_options: output_options_for_format(watermark_options[:type]).merge(rate: source_samplerate)
               )
             end
@@ -125,15 +125,19 @@ module CarrierWave
 
         # Convert file using options
         def convert_file input_file_path:, input_options:, output_file_path:, output_options:, fx: {}
-          converter = Sox::Cmd.new
-          converter.add_input input_file_path, input_options
-          converter.set_output output_file_path, output_options
-          converter.set_effects fx
-          converter.run
+          if output_options[:output_format] == :ogg
+            `ffmpeg -i #{input_file_path} -c:a libvorbis #{output_file_path}`
+          else
+            converter = Sox::Cmd.new
+            converter.add_input input_file_path, input_options
+            converter.set_output output_file_path, output_options
+            converter.set_effects fx
+            converter.run
+          end
         end
 
         def sanitized_format format
-          supported_formats = [:mp3]
+          supported_formats = [:mp3, :ogg]
           if supported_formats.include?(format.to_sym)
             format.to_s
           else
